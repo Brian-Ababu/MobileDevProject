@@ -122,13 +122,14 @@ class MainViewModel @Inject constructor(
     fun onLogin(email: String, pass: String) {
 
         inProgress.value = true
+        //Method to sign in  user with email address and password
         auth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     signedIn.value = true
                     getUserData(auth.currentUser?.uid ?: "")
                     //test whether the user is signed in
-                    //handleException(customMessage = "Login successful")
+                    handleException(customMessage = "Login successful")
                 } else {
                     handleException(task.exception, "Login failed")
                     inProgress.value = false
@@ -140,6 +141,9 @@ class MainViewModel @Inject constructor(
             }
     }
 
+    fun onSave(){
+        createOrUpdateProfile()
+    }
     /**
      * Creates or updates the user profile with the provided information.
      *

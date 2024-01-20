@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.filled.Email
-//import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +27,6 @@ import com.ababu.mobiledevproject.presentation.MainViewModel
 import com.ababu.mobiledevproject.presentation.common.CheckSignedIn
 import com.ababu.mobiledevproject.presentation.common.ProgressSpinner
 import com.ababu.mobiledevproject.presentation.components.BottomComponent
-//import com.ababu.mobiledevproject.presentation.components.DefaultButtonComponent
 import com.ababu.mobiledevproject.presentation.components.HeadingTextComponent
 import com.ababu.mobiledevproject.presentation.components.MyTextFieldComponent
 import com.ababu.mobiledevproject.presentation.components.NormalTextComponent

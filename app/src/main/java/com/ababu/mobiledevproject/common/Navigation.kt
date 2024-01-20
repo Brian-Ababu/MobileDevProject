@@ -10,6 +10,7 @@ import com.ababu.mobiledevproject.presentation.common.NotificationMessage
 import com.ababu.mobiledevproject.presentation.screens.auth.LoginScreen
 import com.ababu.mobiledevproject.presentation.screens.auth.SignupScreen
 import com.ababu.mobiledevproject.presentation.screens.main.HomeScreen
+import com.ababu.mobiledevproject.presentation.screens.main.ProfileScreen
 
 //import com.ababu.mobiledevproject.presentation.screens.main.MyProfileScreen
 //import com.ababu.mobiledevproject.presentation.screens.main.MyServicesScreen
@@ -21,13 +22,13 @@ fun MobileApp() {
     val vm: MainViewModel = hiltViewModel()
     val navController = rememberNavController()
     NotificationMessage(vm = vm)
-    NavHost(navController = navController, startDestination = Routes.Signup.route) {
+    NavHost(navController = navController, startDestination = Routes.Login.route) {
        composable(Routes.Home.route)  {
            HomeScreen(navController = navController)
        }
-//        composable(Routes.Profile.route) {
-//            MyProfileScreen(navController = navController, vm = vm)
-//        }
+        composable(Routes.Profile.route) {
+            ProfileScreen(navController = navController, vm = vm)
+        }
         composable(Routes.Signup.route) {
             SignupScreen(navController = navController, vm = vm)
         }
