@@ -18,7 +18,7 @@ data class UserData(
     var username: String? = null,
     var firstname: String? = null,
     var lastname: String? = null,
-    var phoneNumber: String? = null,
+    var phonenumber: String? = null,
     var imageUrl: String? = null,
     var bio: String? = null,
     var role:List<Roles>? = null,

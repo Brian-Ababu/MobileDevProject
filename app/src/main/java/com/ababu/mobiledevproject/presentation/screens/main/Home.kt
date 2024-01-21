@@ -1,8 +1,11 @@
 package com.ababu.mobiledevproject.presentation.screens.main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
@@ -42,12 +45,26 @@ fun HomeScreen(navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         myImage(image = R.drawable.headingimage)
+        myImage(image = R.drawable.homepage)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
         Button( onClick = {
             focus.clearFocus(force = true)
             navController.navigate(Routes.Signup.route)
         }, modifier = Modifier.padding(8.dp)
         ) {
             Text(text = "Sign up")
+        }
+        Button( onClick = {
+            focus.clearFocus(force = true)
+            navController.navigate(Routes.Login.route)
+        }, modifier = Modifier.padding(8.dp)
+        ) {
+            Text(text = "Log in")
+        }
         }
         }
     }

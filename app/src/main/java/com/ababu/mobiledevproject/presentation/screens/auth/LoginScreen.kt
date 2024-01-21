@@ -53,7 +53,7 @@ fun LoginScreen(navController : NavController, vm: MainViewModel) {
             val passwordState = remember { mutableStateOf(TextFieldValue()) }
 
 
-            myImage(image = R.drawable.headingimage)
+            myImage(image = R.drawable.tokyo)
             HeadingTextComponent(value = "Hi, Welcome Back!" )
             NormalTextComponent(value = "Hello again you've been missed!")
             MyTextFieldComponent(

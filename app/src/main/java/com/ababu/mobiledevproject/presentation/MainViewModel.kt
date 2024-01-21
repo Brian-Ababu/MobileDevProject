@@ -1,5 +1,8 @@
 package com.ababu.mobiledevproject.presentation
 
+import android.net.Uri
+import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -8,8 +11,11 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.ababu.mobiledevproject.common.USERS
 import com.ababu.mobiledevproject.data.Event
+import com.ababu.mobiledevproject.data.ServicesData
 import com.ababu.mobiledevproject.data.UserData
+import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.UUID
 import javax.inject.Inject
 
 
@@ -74,17 +80,17 @@ class MainViewModel @Inject constructor(
     //pass model data to firestore
     fun onSignup(
         username: String,
-        firstName: String,
-        lastName: String,
+        firstname: String,
+        lastname: String,
         email: String,
-        phoneNumber: String,
+        phonenumber: String,
         pass: String
     ) {
         //validate all fields are filled
-//        if (username.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || pass.isEmpty()) {
-//            popupNotification.value = Event("Please fill in all the fields")
-//            return
-//        }
+        if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || phonenumber.isEmpty() || email.isEmpty() || pass.isEmpty()) {
+            popupNotification.value = Event("Please fill in all the fields")
+            return
+        }
         inProgress.value = true
         //check if username already exists if not create user
         db.collection(USERS).whereEqualTo("username", username ).get()
@@ -156,6 +162,9 @@ class MainViewModel @Inject constructor(
     private fun createOrUpdateProfile(
         name: String? = null,
         username: String? = null,
+        firstname: String? = null,
+        lastname: String? = null,
+        phonenumber: String? = null,
         bio: String? = null,
         imageUrl: String? = null
     ) {
@@ -164,6 +173,9 @@ class MainViewModel @Inject constructor(
             userId = uid,
             name = name ?: userData.value?.name,
             username = username ?: userData.value?.username,
+            firstname = firstname?: userData.value?.firstname,
+            lastname = lastname?: userData.value?.lastname,
+            phonenumber = phonenumber?: userData.value?.phonenumber,
             bio = bio ?: userData.value?.bio,
             imageUrl = imageUrl ?: userData.value?.imageUrl,
             role = userData.value?.role,
@@ -241,4 +253,83 @@ class MainViewModel @Inject constructor(
         popupNotification.value = Event(message)
     }
 
+    fun updateProfileData(name: String, username: String, bio: String) {
+        createOrUpdateProfile(name, username, bio)
+    }
+
+    fun onLogout() {
+        auth.signOut()
+        signedIn.value = false
+        userData.value = null
+        popupNotification.value = Event("Logged out")
+    }
+
+
+    /**
+     * Uploads an image to the storage using the provided URI.
+     *
+     * @param uri The URI of the image to be uploaded.
+     * @param onSuccess Callback function to be executed when the image upload is successful.
+     */
+
+    /**
+     * Uploads an image to the Firebase storage.
+     *
+     * @param uri The URI of the image to be uploaded.
+     * @param onSuccess Callback function to be executed when the image upload is successful.
+     */
+
+    private fun uploadImage(uri: Uri, onSuccess: (Uri) -> Unit) {
+        inProgress.value = true
+
+
+        val storageRef = storage.reference
+        val uuid = UUID.randomUUID()
+        val imageRef = storageRef.child("$uuid")
+        val uploadTask = imageRef.putFile(uri)
+
+        uploadTask
+            .addOnSuccessListener {
+                val result = it.metadata?.reference?.downloadUrl
+                Log.d( "uploadImage: $result", "uploadImage: $result")
+                result?.addOnSuccessListener(onSuccess)
+            }
+            .addOnFailureListener { exc ->
+                handleException(exc)
+                inProgress.value = false
+            }
+    }
+    fun uploadProfileImage(uri: Uri) {
+        uploadImage(uri) {
+            createOrUpdateProfile(imageUrl = it.toString())
+            updateServiceImageData(it.toString())
+        }
+    }
+//Upload service image
+
+    //create service
+    private fun onCreateService(imageUri: Uri, description: String, onPostSuccess: () -> Unit){
+        //fetch userid
+        //get the current username
+        //get the current user image
+
+        //check if the current user id is null
+        //Assign the services data model a variable
+        //use the set method to set the data
+
+    }
+    private fun updateServiceImageData(imageUrl: String) {
+
+
+    }
+    private fun convertServices(documents: QuerySnapshot, outState: MutableState<List<ServicesData>>) {
+        val newServices = mutableListOf<ServicesData>()
+        documents.forEach { doc ->
+            val services= doc.toObject<ServicesData>()
+            newServices.add(services)
+        }
+        val sortedServices = newServices.sortedByDescending { it.time }
+        outState.value = sortedServices
+    }
+    //Add roles controller
 }
