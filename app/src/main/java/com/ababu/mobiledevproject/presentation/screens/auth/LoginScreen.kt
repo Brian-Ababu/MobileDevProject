@@ -57,12 +57,17 @@ fun LoginScreen(navController : NavController, vm: MainViewModel) {
             HeadingTextComponent(value = "Hi, Welcome Back!" )
             NormalTextComponent(value = "Hello again you've been missed!")
             MyTextFieldComponent(
-                labelValue ="myname@uxclass.live",
                 icon=Icons.Outlined.Email,
                 label="Email",
-                value = emailState.value
+                value = emailState.value,
+                onValueChange = {emailState.value = it}
             )
-            PasswordTextFieldComponent(labelValue ="Please Enter Your Password", value = passwordState.value, label = "Password")
+            PasswordTextFieldComponent(
+                labelValue ="Please Enter Your Password",
+                value = passwordState.value,
+                label = "Password",
+                onValueChange = {passwordState.value = it}
+                )
 
             Button( onClick = {
                 focus.clearFocus(force = true)

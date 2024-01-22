@@ -1,5 +1,7 @@
 package com.ababu.mobiledevproject.presentation.screens.auth
 
+import android.util.Log
+import android.util.Log.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -58,7 +60,7 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
             ),
             horizontalAlignment = Alignment.CenterHorizontally){
 
-            val username = remember { mutableStateOf(TextFieldValue()) }
+            val usernameState = remember { mutableStateOf(TextFieldValue()) }
             val firstNameState = remember { mutableStateOf(TextFieldValue()) }
             val lastNameState = remember { mutableStateOf(TextFieldValue()) }
             val emailState = remember { mutableStateOf(TextFieldValue()) }
@@ -69,41 +71,45 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
             HeadingTextComponent(value = "Create an account")
             NormalTextComponent(value = "Connect with your friends today!")
             MyTextFieldComponent(
-                labelValue ="user name",
-                value= username.value,
+                value= usernameState.value,
                 label="User Name",
-                icon = Icons.Default.Person)
+                icon = Icons.Default.Person,
+                onValueChange = {usernameState.value = it})
             MyTextFieldComponent(
-                labelValue ="first name",
                 value= firstNameState.value,
                 label="First Name",
-                icon = Icons.Default.Person)
+                icon = Icons.Default.Person,
+                onValueChange = {firstNameState.value = it})
+
             MyTextFieldComponent(
-                labelValue ="last name",
                 icon = Icons.Default.Person,
                 label="Last Name",
-                value = lastNameState.value
+                value = lastNameState.value,
+                onValueChange = {lastNameState.value = it}
             )
+
             MyTextFieldComponent(
-                labelValue ="email",
                 icon = Icons.Default.Email,
-                label="Email",
-                value = emailState.value
-            )
+                label = "Email",
+                value = emailState.value,
+                onValueChange = {emailState.value = it})
+
             MyTextFieldComponent(
-                labelValue ="phone number",
                 icon = Icons.Default.Call,
                 label="Phone Number",
-                value = phoneNumberState.value
+                value = phoneNumberState.value,
+                onValueChange = {phoneNumberState.value = it}
             )
-            PasswordTextFieldComponent(labelValue = "password",  label ="Password", value=passwordState.value)
+            PasswordTextFieldComponent(labelValue = "password",  label ="Password", value=passwordState.value, onValueChange = {passwordState.value = it})
 
             Button(
                 onClick = {
                     focus.clearFocus(force = true)
                     vm.onSignup(
-                       username.value.text, firstNameState.value.text, lastNameState.value.text, emailState.value.text, phoneNumberState.value.text, passwordState.value.text
+                       usernameState.value.text, firstNameState.value.text, lastNameState.value.text, emailState.value.text, phoneNumberState.value.text, passwordState.value.text
                     )
+                    Log.d("Email:", emailState.value.text,)
+//                    Log.d( "SignupScreen: check"  $emailState, $passwordState)
                 }, modifier = Modifier.padding(8.dp)
             ) {
                 Text(text = "SIGN UP")

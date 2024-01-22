@@ -34,6 +34,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -53,6 +54,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
@@ -112,20 +114,16 @@ fun HeadingTextComponent(value: String) {
          * @param labelValue The label for the text field.
          * @param icon The leading icon for the text field.
          */
-fun MyTextFieldComponent(labelValue: String, icon: ImageVector, label: String, value: Any) {
-    var textValue by remember {
-        mutableStateOf("")
-    }
+fun MyTextFieldComponent(icon: ImageVector, label: String, value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
+
     Column {
+
         Text(text = label)
         OutlinedTextField(
-            label = {
-                Text(text = labelValue)
-            },
-            value = textValue,
-            onValueChange = {
-                textValue = it
-            },
+
+            label = { Text(text = label) },
+            value = value,
+            onValueChange = onValueChange,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = AccentColor,
                 focusedLabelColor = AccentColor,
@@ -172,7 +170,7 @@ fun MyTextFieldComponent(labelValue: String, icon: ImageVector, label: String, v
          * @param labelValue The label text for the text field.
          * @param icon The icon to be displayed as the leading icon.
          */
-fun PasswordTextFieldComponent(labelValue: String, label: String, value: Any) {
+fun PasswordTextFieldComponent(labelValue: String, label: String, value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit ) {
     /**
      * Defines a mutable state variable called 'password' using the 'remember' function from the Jetpack Compose library.
      *
@@ -226,10 +224,8 @@ fun PasswordTextFieldComponent(labelValue: String, label: String, value: Any) {
             label = {
                 Text(text = labelValue)
             },
-            value = password,
-            onValueChange = {
-                password = it
-            },
+            value = value,
+            onValueChange = onValueChange,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = AccentColor,
                 focusedLabelColor = AccentColor,
