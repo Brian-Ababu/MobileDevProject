@@ -27,33 +27,44 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ababu.mobiledevproject.common.Routes
 import com.ababu.mobiledevproject.presentation.common.CommonImage
 import com.ababu.mobiledevproject.presentation.common.ProgressSpinner
+import com.ababu.mobiledevproject.presentation.common.navigateTo
 
 @Composable
 fun ProfileScreen(navController: NavController, vm:MainViewModel){
-    //Create a onsave method in the main view model that updates the user profile when the save button is clicked
+    //Check if data is being loaded
     val isLoading = vm.inProgress.value
     if (isLoading) {
         ProgressSpinner()
     } else {
+        //Retrieve user data
         val userData = vm.userData.value
-        var name by rememberSaveable { mutableStateOf(userData?.name ?: "") }
+
+        // Initialize mutable state variables for the firstname, lastname, username, and bio
+        var firstname by rememberSaveable { mutableStateOf(userData?.firstname ?: "") }
+        var lastname by rememberSaveable { mutableStateOf(userData?.lastname ?: "") }
         var username by rememberSaveable { mutableStateOf(userData?.username ?: "") }
         var bio by rememberSaveable { mutableStateOf(userData?.bio ?: "") }
-        Log.d("prof", "name: $name, username: $username, bio: $bio")
+        Log.d("prof", "firstname: $firstname, lastname: $lastname, username: $username, bio: $bio")
+
+        //Render the profile content
         ProfileContent(
             vm = vm,
-            name = name,
+            firstname = firstname,
+            lastname = lastname,
             username = username,
             bio = bio,
-            onNameChange = { name = it },
+            onFirstNameChange = { firstname = it},
+            onLastNameChange = { lastname = it },
             onUsernameChange = { username = it },
             onBioChange = { bio = it },
-            onSave = { },
-            onBack = {  },
+            onSave = { vm.updateProfileData(firstname, lastname, username, bio) },
+            onBack = { navigateTo(navController = navController, Routes.Services) },
             onLogout = {
-
+                vm.onLogout()
+                navigateTo(navController, Routes.Login)
             }
         )
     }
@@ -63,10 +74,12 @@ fun ProfileScreen(navController: NavController, vm:MainViewModel){
 @Composable
 fun ProfileContent(
     vm: MainViewModel,
-    name: String,
+    firstname: String,
+    lastname: String,
     username: String,
     bio: String,
-    onNameChange: (String) -> Unit,
+    onFirstNameChange: (String) -> Unit,
+    onLastNameChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
     onBioChange: (String) -> Unit,
     onSave: () -> Unit,
@@ -92,10 +105,7 @@ fun ProfileContent(
         }
 
 
-
         ProfileImage(imageUrl = imageUrl, vm = vm)
-
-
 
         Row(
             modifier = Modifier
@@ -103,10 +113,27 @@ fun ProfileContent(
                 .padding(start = 4.dp, end = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Name", modifier = Modifier.width(100.dp))
+            Text(text = "First Name", modifier = Modifier.width(100.dp))
             TextField(
-                value = name,
-                onValueChange = onNameChange,
+                value = firstname,
+                onValueChange = onFirstNameChange,
+                colors = TextFieldDefaults.textFieldColors(
+
+                    textColor = Color.Black
+                )
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, end = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Last Name", modifier = Modifier.width(100.dp))
+            TextField(
+                value = lastname,
+                onValueChange = onLastNameChange,
                 colors = TextFieldDefaults.textFieldColors(
 
                     textColor = Color.Black
@@ -166,7 +193,7 @@ fun ProfileImage(imageUrl: String?, vm: MainViewModel) {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {uri: Uri? ->
-        uri?.let {  }
+        uri?.let { vm.uploadProfileImage(uri) }
     }
 
     Box(modifier = Modifier.height(IntrinsicSize.Min)) {
@@ -194,34 +221,3 @@ fun ProfileImage(imageUrl: String?, vm: MainViewModel) {
     }
 }
 
-
-//    Column(
-//        modifier = Modifier.padding(16.dp)
-//    ) {
-//        // Profile fields
-//        TextField(
-//            value = viewModel.userProfile.name,
-//            onValueChange = { viewModel.userProfile.name = it },
-//            label = { Text(text = "Name") }
-//        )
-//        TextField(
-//            value = viewModel.userProfile.age,
-//            onValueChange = { viewModel.userProfile.age = it },
-//            label = { Text(text = "Age") }
-//        )
-//        TextField(
-//            value = viewModel.userProfile.email,
-//            onValueChange = { viewModel.userProfile.email = it },
-//            label = { Text(text = "Email") }
-//        )
-//
-//        // Save button
-//        Button(
-//            onClick = { viewModel.onSave() },
-//            modifier = Modifier.padding(top = 16.dp)
-//        ) {
-//            Text(text = "Save")
-//        }
-//    }
-//}
-//
