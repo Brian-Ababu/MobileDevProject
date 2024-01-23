@@ -22,7 +22,7 @@ data class UserData(
     var imageUrl: String? = null,
     var bio: String? = null,
     var role:List<Roles>? = null,
-    //Add the s
+    //Add the services
     var services: List<String>? = null
 ) {
     /**
@@ -33,6 +33,9 @@ data class UserData(
     fun toMap() = mapOf(
         "userId" to userId,
         "name" to name,
+        "firstname" to firstname,
+        "lastname" to lastname,
+        "phonenumber" to phonenumber,
         "username" to username,
         "imageUrl" to imageUrl,
         "bio" to bio,
