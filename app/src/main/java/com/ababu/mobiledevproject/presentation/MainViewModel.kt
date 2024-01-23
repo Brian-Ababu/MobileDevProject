@@ -87,10 +87,10 @@ class MainViewModel @Inject constructor(
         pass: String
     ) {
         //validate all fields are filled
-//        if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || phonenumber.isEmpty() || email.isEmpty() || pass.isEmpty()) {
-//            popupNotification.value = Event("Please fill in all the fields")
-//            return
-//        }
+        if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || phonenumber.isEmpty() || email.isEmpty() || pass.isEmpty()) {
+            popupNotification.value = Event("Please fill in all the fields")
+            return
+        }
         inProgress.value = true
         //check if username already exists if not create user
         db.collection(USERS).whereEqualTo("username", username ).get()

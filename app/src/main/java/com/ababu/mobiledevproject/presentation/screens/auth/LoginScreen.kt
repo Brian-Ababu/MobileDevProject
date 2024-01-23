@@ -26,7 +26,6 @@ import com.ababu.mobiledevproject.common.Routes
 import com.ababu.mobiledevproject.presentation.MainViewModel
 import com.ababu.mobiledevproject.presentation.common.CheckSignedIn
 import com.ababu.mobiledevproject.presentation.common.ProgressSpinner
-import com.ababu.mobiledevproject.presentation.components.BottomComponent
 import com.ababu.mobiledevproject.presentation.components.HeadingTextComponent
 import com.ababu.mobiledevproject.presentation.components.MyTextFieldComponent
 import com.ababu.mobiledevproject.presentation.components.NormalTextComponent
@@ -37,6 +36,8 @@ import com.ababu.mobiledevproject.presentation.components.myImage
 @Composable
 fun LoginScreen(navController : NavController, vm: MainViewModel) {
     CheckSignedIn(vm = vm, navController=navController)
+    val emailState = remember { mutableStateOf(TextFieldValue()) }
+    val passwordState = remember { mutableStateOf(TextFieldValue()) }
     val focus = LocalFocusManager.current
     Surface(
         modifier = Modifier
@@ -49,11 +50,7 @@ fun LoginScreen(navController : NavController, vm: MainViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ){
 
-            val emailState = remember { mutableStateOf(TextFieldValue()) }
-            val passwordState = remember { mutableStateOf(TextFieldValue()) }
-
-
-            myImage(image = R.drawable.tokyo)
+            myImage(image = R.drawable.headingimage)
             HeadingTextComponent(value = "Hi, Welcome Back!" )
             NormalTextComponent(value = "Hello again you've been missed!")
             MyTextFieldComponent(
@@ -78,12 +75,7 @@ fun LoginScreen(navController : NavController, vm: MainViewModel) {
             ) {
                 Text(text = "Log in")
             }
-            BottomComponent(
-                textQuery = "Don't have an account? ",
-                textClickable = "Register",
-                action = "Register",
-                navController.navigate(Routes.Signup.route)
-            )
+
             val isLoading = vm.inProgress.value
             if (isLoading) {
                 ProgressSpinner()

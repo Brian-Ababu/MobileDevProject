@@ -100,7 +100,11 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
                 value = phoneNumberState.value,
                 onValueChange = {phoneNumberState.value = it}
             )
-            PasswordTextFieldComponent(labelValue = "password",  label ="Password", value=passwordState.value, onValueChange = {passwordState.value = it})
+            PasswordTextFieldComponent(
+                labelValue = "password",
+                label ="Password",
+                value=passwordState.value,
+                onValueChange = {passwordState.value = it})
 
             Button(
                 onClick = {
