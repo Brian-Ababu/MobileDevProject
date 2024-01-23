@@ -147,9 +147,6 @@ class MainViewModel @Inject constructor(
             }
     }
 
-    fun onSave(){
-        createOrUpdateProfile()
-    }
     /**
      * Creates or updates the user profile with the provided information.
      *
@@ -253,8 +250,8 @@ class MainViewModel @Inject constructor(
         popupNotification.value = Event(message)
     }
 
-    fun updateProfileData(name: String, username: String, bio: String) {
-        createOrUpdateProfile(name, username, bio)
+    fun updateProfileData(firstname: String, lastname: String, username: String, bio: String) {
+        createOrUpdateProfile(firstname, lastname, username, bio)
     }
 
     fun onLogout() {
@@ -282,11 +279,25 @@ class MainViewModel @Inject constructor(
     private fun uploadImage(uri: Uri, onSuccess: (Uri) -> Unit) {
         inProgress.value = true
 
-
+        /**
+         * Uploads an image file to Firebase Storage.
+         * @param uri The URI of the image file to be uploaded.
+         */
         val storageRef = storage.reference
         val uuid = UUID.randomUUID()
-        val imageRef = storageRef.child("$uuid")
+        val imageRef = storageRef.child("images/$uuid")
         val uploadTask = imageRef.putFile(uri)
+
+        /**
+         * Handles the upload task success and failure.
+         * - If the upload task is successful, it retrieves the download URL and invokes the onSuccess callback.
+         * - If the upload task fails, it handles the exception and sets the inProgress value to false.
+         *
+         * @param uploadTask The upload task to handle.
+         * @param onSuccess The callback function to invoke when the upload task is successful.
+         * @param handleException The function to handle the exception when the upload task fails.
+         * @param inProgress The MutableLiveData<Boolean> to indicate if the upload is in progress.
+         */
 
         uploadTask
             .addOnSuccessListener {
@@ -299,13 +310,15 @@ class MainViewModel @Inject constructor(
                 inProgress.value = false
             }
     }
+
+    //Uploads image service
     fun uploadProfileImage(uri: Uri) {
         uploadImage(uri) {
             createOrUpdateProfile(imageUrl = it.toString())
             updateServiceImageData(it.toString())
         }
     }
-//Upload service image
+
 
     //create service
     private fun onCreateService(imageUri: Uri, description: String, onPostSuccess: () -> Unit){
@@ -319,7 +332,9 @@ class MainViewModel @Inject constructor(
 
     }
     private fun updateServiceImageData(imageUrl: String) {
-
+        //get current user data from firestore
+        //use the .whereEqualto method to get the userId
+        //post service image to firestore
 
     }
     private fun convertServices(documents: QuerySnapshot, outState: MutableState<List<ServicesData>>) {
