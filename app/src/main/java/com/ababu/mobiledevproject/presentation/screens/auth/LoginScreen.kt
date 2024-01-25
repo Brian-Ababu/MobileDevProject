@@ -2,6 +2,7 @@ package com.ababu.mobiledevproject.presentation.screens.auth
 
 //import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -75,6 +76,15 @@ fun LoginScreen(navController : NavController, vm: MainViewModel) {
             ) {
                 Text(text = "Log in")
             }
+
+            Text(text = "Don't have an account? Go to signup ->",
+                color = Color.Blue,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable {
+                        navController.navigate(Routes.Signup.route)
+                    })
+
 
             val isLoading = vm.inProgress.value
             if (isLoading) {
