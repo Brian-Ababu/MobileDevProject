@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -104,7 +105,9 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
                 labelValue = "password",
                 label ="Password",
                 value=passwordState.value,
-                onValueChange = {passwordState.value = it})
+                onValueChange = {passwordState.value = it},
+                icon = Icons.Outlined.Lock
+            )
 
             Button(
                 onClick = {

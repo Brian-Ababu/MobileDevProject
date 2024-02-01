@@ -1,45 +1,39 @@
 package com.ababu.mobiledevproject.presentation.screens.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.ababu.mobiledevproject.R
-import com.ababu.mobiledevproject.data.CardData
+import com.ababu.mobiledevproject.common.Routes
 import com.ababu.mobiledevproject.presentation.MainViewModel
 import com.ababu.mobiledevproject.presentation.components.HeadingTextComponent
-import com.ababu.mobiledevproject.presentation.components.ImageCardList
-
 
 @Composable
-//Screen lists the services offered
-fun ServiceScreen(navController: NavController, vm: MainViewModel) {
+fun BookingScreen(navController: NavController, vm: MainViewModel) {
 
-//Figure out how to render multiple cards
-
-    var cardDataList = listOf(
-        CardData(R.drawable.barber_shop, "Barber Shop Appointment"),
-//        CardData(R.drawable.hair_salon, "Hair Stylist Appointment"),
-//        CardData(R.drawable.massage_appointment, "Massage Appointment")
-    )
 
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
 
+        //Add ability to book an appointment online
+        //Ability to choose your date, time and hairdresser
+        //Store the hair dresser list
+        //inform the customer if booking is successful via email
+        //Set maximum limit for bookings per hairdresser (5 per day)
 
         BottomNavigationMenu(
             selectedItem = BottomNavigationItem.SERVICES,
             navController = navController
         )
 
-        HeadingTextComponent(value = "Our Services")
-        ImageCardList(cardDataList = cardDataList, navController = navController)
+        HeadingTextComponent(value = "Booking Screen")
 
-
-
+        Text(modifier = Modifier.clickable { navController.navigate(Routes.Style.route) }, text = "Share your hair design choices")
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.ababu.mobiledevproject.common.SERVICES
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
@@ -43,6 +44,7 @@ class MainViewModel @Inject constructor(
     val signedIn = mutableStateOf(false)
     val inProgress = mutableStateOf(false)
     val userData = mutableStateOf<UserData?>(null)
+    val servicesData = mutableStateOf<ServicesData?>(null)
     val popupNotification = mutableStateOf<Event<String>?>(null)
 
     /**
@@ -321,30 +323,59 @@ class MainViewModel @Inject constructor(
 
 
     //create service
-    private fun onCreateService(imageUri: Uri, description: String, onPostSuccess: () -> Unit){
+    private fun onCreateService(imageUri: Uri, description: String, onServiceSuccess: () -> Unit) {
         //fetch userid
+        val uid = auth.currentUser?.uid
         //get the current username
-        //get the current user image
+        val username = userData.value?.username
+
 
         //check if the current user id is null
-        //Assign the services data model a variable
-        //use the set method to set the data
+        if (uid !== null) {
+            //create a unique id for the post
+            val serviceUuid = UUID.randomUUID().toString()
+            //Assign the services data model a variable
+            val service = ServicesData(
+                serviceId = serviceUuid,
+                username = username,
+                serviceImage = imageUri.toString(),
+                serviceDescription = description
+            )
+            db.collection(
+                SERVICES
+            ).document(serviceUuid).set(service).addOnSuccessListener {
+                popupNotification.value = Event("Service successfully created")
+                inProgress.value = false
+                onServiceSuccess.invoke()
+            }.addOnFailureListener { exc ->
+                handleException(exc, "Unable to create service")
+                inProgress.value = false
+            }
 
+        } else {
+            handleException(customMessage = "Error: username unavailable. Unable to create service")
+            onLogout()
+            inProgress.value = false
+        }
+    }
+    fun onNewService(uri: Uri, description: String, onServiceSuccess: () -> Unit) {
+        uploadImage(uri) {
+            onCreateService(it, description, onServiceSuccess)
+        }
     }
     private fun updateServiceImageData(imageUrl: String) {
-        //get current user data from firestore
-        //use the .whereEqualto method to get the userId
-        //post service image to firestore
+
 
     }
+
     private fun convertServices(documents: QuerySnapshot, outState: MutableState<List<ServicesData>>) {
         val newServices = mutableListOf<ServicesData>()
         documents.forEach { doc ->
-            val services= doc.toObject<ServicesData>()
+            val services = doc.toObject<ServicesData>()
             newServices.add(services)
         }
         val sortedServices = newServices.sortedByDescending { it.time }
         outState.value = sortedServices
     }
-    //Add roles controller
+
 }

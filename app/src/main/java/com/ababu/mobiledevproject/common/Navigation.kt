@@ -9,18 +9,20 @@ import com.ababu.mobiledevproject.presentation.MainViewModel
 import com.ababu.mobiledevproject.presentation.common.NotificationMessage
 import com.ababu.mobiledevproject.presentation.screens.auth.LoginScreen
 import com.ababu.mobiledevproject.presentation.screens.auth.SignupScreen
+import com.ababu.mobiledevproject.presentation.screens.main.BookingScreen
 import com.ababu.mobiledevproject.presentation.screens.main.HomeScreen
 import com.ababu.mobiledevproject.presentation.screens.main.MyServicesScreen
 import com.ababu.mobiledevproject.presentation.screens.main.ProfileScreen
 import com.ababu.mobiledevproject.presentation.screens.main.SearchScreen
 import com.ababu.mobiledevproject.presentation.screens.main.ServiceScreen
+import com.ababu.mobiledevproject.presentation.screens.main.ServicesUploadScreen
 
 @Composable
 fun MobileApp() {
     val vm: MainViewModel = hiltViewModel()
     val navController = rememberNavController()
     NotificationMessage(vm = vm)
-    NavHost(navController = navController, startDestination = Routes.Home.route) {
+    NavHost(navController = navController, startDestination = Routes.Services.route) {
        composable(Routes.Home.route)  {
            HomeScreen(navController = navController)
        }
@@ -41,6 +43,12 @@ fun MobileApp() {
         }
         composable(Routes.MyServices.route) {
             MyServicesScreen(navController = navController, vm = vm)
+        }
+        composable(Routes.Booking.route){
+            BookingScreen(navController = navController, vm = vm)
+        }
+        composable(Routes.Style.route){
+            ServicesUploadScreen(navController = navController, vm = vm, encodedUri = "imageUri" )
         }
 
     }

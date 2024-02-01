@@ -1,5 +1,5 @@
 package com.ababu.mobiledevproject.common
 
 const val USERS = "users"
-const val POSTS = "posts"
-const val COMMENTS = "comments"
+const val SERVICES= "services"
+const val BOOKINGS = "bookings"

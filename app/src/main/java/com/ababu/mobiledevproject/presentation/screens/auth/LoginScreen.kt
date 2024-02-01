@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -64,7 +65,8 @@ fun LoginScreen(navController : NavController, vm: MainViewModel) {
                 labelValue ="Please Enter Your Password",
                 value = passwordState.value,
                 label = "Password",
-                onValueChange = {passwordState.value = it}
+                onValueChange = {passwordState.value = it},
+                icon = Icons.Outlined.Lock
                 )
 
             Button( onClick = {
