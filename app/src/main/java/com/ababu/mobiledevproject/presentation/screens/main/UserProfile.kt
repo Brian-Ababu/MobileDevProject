@@ -41,6 +41,7 @@ fun ProfileScreen(navController: NavController, vm:MainViewModel){
     } else {
         //Retrieve user data
         val userData = vm.userData.value
+        Log.d("userData", "userData: $userData")
 
         // Initialize mutable state variables for the firstname, lastname, username, and bio
         var firstname by rememberSaveable { mutableStateOf(userData?.firstname ?: "") }
