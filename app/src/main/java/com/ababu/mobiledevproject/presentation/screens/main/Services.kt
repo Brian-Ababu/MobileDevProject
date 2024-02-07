@@ -1,5 +1,6 @@
 package com.ababu.mobiledevproject.presentation.screens.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,8 +23,8 @@ fun ServiceScreen(navController: NavController, vm: MainViewModel) {
 
     var cardDataList = listOf(
         CardData(R.drawable.barber_shop, "Barber Shop Appointment"),
-//        CardData(R.drawable.hair_salon, "Hair Stylist Appointment"),
-//        CardData(R.drawable.massage_appointment, "Massage Appointment")
+       CardData(R.drawable.hair_salon, "Hair Stylist Appointment"),
+       CardData(R.drawable.massage_appointment, "Massage Appointment")
     )
 
     Column(modifier = Modifier
@@ -37,8 +38,11 @@ fun ServiceScreen(navController: NavController, vm: MainViewModel) {
         )
 
         HeadingTextComponent(value = "Our Services")
+
+
         ImageCardList(cardDataList = cardDataList, navController = navController)
 
+        Log.d("imagecards", "$cardDataList")
 
 
     }

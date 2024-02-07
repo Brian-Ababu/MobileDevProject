@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ababu.mobiledevproject.R
 import com.ababu.mobiledevproject.common.Routes
-import com.ababu.mobiledevproject.presentation.common.navigateTo
 import com.ababu.mobiledevproject.presentation.components.myImage
 
 
@@ -31,9 +30,9 @@ fun HomeScreen(navController: NavController){
     val focus = LocalFocusManager.current
     Surface (
         modifier = Modifier
-            .fillMaxSize()
+
             .background(Color.White)
-            .padding(28.dp)
+
     ) {
     Column (
         modifier = Modifier

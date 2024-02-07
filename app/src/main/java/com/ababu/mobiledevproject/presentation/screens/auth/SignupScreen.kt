@@ -1,7 +1,6 @@
 package com.ababu.mobiledevproject.presentation.screens.auth
 
 import android.util.Log
-import android.util.Log.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -48,13 +47,13 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
     val focus = LocalFocusManager.current
     Surface(
         modifier = Modifier
-            .fillMaxSize()
+
             .background(Color.White)
-            .padding(28.dp)
+
     ) {
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(28.dp)
             .wrapContentHeight()
             .verticalScroll(
                 rememberScrollState()
