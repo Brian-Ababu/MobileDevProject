@@ -311,6 +311,7 @@ fun myImage(
 
 @Composable
 fun ImageCardList(cardDataList: List<CardData>, navController: NavController) {
+    Log.d("Logging all", "ImageCardList: $cardDataList")
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(cardDataList) { cardData ->
             ImageCard(cardData = cardData, navController = navController)
@@ -343,7 +344,9 @@ fun ImageCard(cardData: CardData, navController: NavController) {
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            modifier = Modifier.padding(2.dp) .clickable { navController.navigate(Routes.Booking.route) },
+            modifier = Modifier
+                .padding(2.dp)
+                .clickable { navController.navigate(Routes.Booking.route) },
             text = cardData.title,
             style = MaterialTheme.typography.bodySmall
         )

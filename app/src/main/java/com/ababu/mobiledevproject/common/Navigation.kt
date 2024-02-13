@@ -22,7 +22,7 @@ fun MobileApp() {
     val vm: MainViewModel = hiltViewModel()
     val navController = rememberNavController()
     NotificationMessage(vm = vm)
-    NavHost(navController = navController, startDestination = Routes.Home.route) {
+    NavHost(navController = navController, startDestination = Routes.Services.route) {
        composable(Routes.Home.route)  {
            HomeScreen(navController = navController)
        }
