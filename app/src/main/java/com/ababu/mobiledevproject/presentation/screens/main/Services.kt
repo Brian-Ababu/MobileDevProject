@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import com.ababu.mobiledevproject.R
 import com.ababu.mobiledevproject.data.CardData
 import com.ababu.mobiledevproject.presentation.MainViewModel
-import com.ababu.mobiledevproject.presentation.components.HeadingTextComponent
 import com.ababu.mobiledevproject.presentation.components.ImageCardList
 
 
@@ -28,8 +27,8 @@ fun ServiceScreen(navController: NavController, vm: MainViewModel) {
 //Figure out how to render multiple cards
 
     var cardDataList = listOf(
-        CardData(R.drawable.barber_shop, "Barber Shop Appointment")
-//        CardData(R.drawable.hair_salon, "Hair Stylist /Appointment")
+        CardData(R.drawable.barber_shop, "Barber Shop Appointment"),
+     //   CardData(R.drawable.hair_salon, "Hair Stylist /Appointment")
 //        CardData(R.drawable.massage_appointment, "Massage Appointment")
     )
 
