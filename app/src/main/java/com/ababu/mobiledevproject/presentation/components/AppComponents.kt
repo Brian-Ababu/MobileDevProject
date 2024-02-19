@@ -8,7 +8,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,6 +61,7 @@ import com.ababu.mobiledevproject.presentation.ui.theme.BgColor
 import com.ababu.mobiledevproject.presentation.ui.theme.Primary
 import com.ababu.mobiledevproject.presentation.ui.theme.Secondary
 import com.ababu.mobiledevproject.presentation.ui.theme.TextColor
+
 @Composable
         /**
          * Displays the provided text value as a centered text with a specific style and color.
@@ -83,6 +83,7 @@ fun NormalTextComponent(value: String) {
         textAlign = TextAlign.Center
     )
 }
+
 @Composable
 fun HeadingTextComponent(value: String) {
     Text(
@@ -99,6 +100,7 @@ fun HeadingTextComponent(value: String) {
         textAlign = TextAlign.Center
     )
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
         /**
@@ -107,7 +109,12 @@ fun HeadingTextComponent(value: String) {
          * @param labelValue The label for the text field.
          * @param icon The leading icon for the text field.
          */
-fun MyTextFieldComponent(icon: ImageVector, label: String, value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
+fun MyTextFieldComponent(
+    icon: ImageVector,
+    label: String,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit
+) {
 
     Column {
 
@@ -155,6 +162,7 @@ fun MyTextFieldComponent(icon: ImageVector, label: String, value: TextFieldValue
         )
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
         /**
@@ -163,7 +171,13 @@ fun MyTextFieldComponent(icon: ImageVector, label: String, value: TextFieldValue
          * @param labelValue The label text for the text field.
          * @param icon The icon to be displayed as the leading icon.
          */
-fun PasswordTextFieldComponent(icon: ImageVector, labelValue: String, label: String, value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit ) {
+fun PasswordTextFieldComponent(
+    icon: ImageVector,
+    labelValue: String,
+    label: String,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit
+) {
     /**
      * Defines a mutable state variable called 'password' using the 'remember' function from the Jetpack Compose library.
      *
@@ -188,6 +202,7 @@ fun PasswordTextFieldComponent(icon: ImageVector, labelValue: String, label: Str
     var password by remember {
         mutableStateOf("")
     }
+
     /**
      * Defines a mutable state variable to track whether the password text should be visible or hidden.
      *
@@ -226,7 +241,7 @@ fun PasswordTextFieldComponent(icon: ImageVector, labelValue: String, label: Str
                 containerColor = BgColor,
                 focusedLeadingIconColor = AccentColor,
 
-            ),
+                ),
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             leadingIcon = {
@@ -246,6 +261,7 @@ fun PasswordTextFieldComponent(icon: ImageVector, labelValue: String, label: Str
     }
 
 }
+
 @Composable
 fun CheckboxComponent() {
     var isChecked by remember {
@@ -268,6 +284,7 @@ fun CheckboxComponent() {
         ClickableTextComponent()
     }
 }
+
 @Composable
 fun ClickableTextComponent() {
     val initialText = "By continuing you accept our "
@@ -302,9 +319,9 @@ fun ClickableTextComponent() {
 @Composable
 fun myImage(
     image: Int
-){
+) {
 
-    Image(painterResource(id = image) , contentDescription = "")
+    Image(painterResource(id = image), contentDescription = "")
 }
 
 //Added cards to be used in the services screen for users to book their appointments
@@ -340,7 +357,7 @@ fun ImageCard(cardData: CardData, navController: NavController) {
                 .height(200.dp)
 
                 .clip(shape = RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
