@@ -114,7 +114,7 @@ class MainViewModel @Inject constructor(
                     auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             signedIn.value = true
-                            createOrUpdateProfile(username = username)
+                            //createOrUpdateProfile(username = username)
                         } else {
                             handleException(task.exception, "Signup failed")
                         }

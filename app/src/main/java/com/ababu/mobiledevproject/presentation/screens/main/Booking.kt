@@ -128,7 +128,7 @@ fun DatePicker(selectedDate: Date, onDateSelected: (Date) -> Unit) {
     }
 }
 
-//function to return the text feild value
+//function to return the text field value
 private fun TextFieldValue.textFieldValue(): TextFieldValue {
     return this
 }

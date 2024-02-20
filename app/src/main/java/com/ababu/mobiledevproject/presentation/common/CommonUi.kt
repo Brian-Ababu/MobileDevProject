@@ -69,7 +69,7 @@ fun CheckSignedIn(vm: MainViewModel, navController: NavController) {
     // If the user is signed in and the user has not already been logged in, navigate to the services screen.
     if (signedIn && !alreadyLoggedIn.value) {
         alreadyLoggedIn.value = true
-        navController.navigate(Routes.Booking.route) {
+        navController.navigate(Routes.Services.route) {
             popUpTo(0)
         }
     }
