@@ -18,10 +18,12 @@ data class UserData(
     var username: String? = null,
     var firstname: String? = null,
     var lastname: String? = null,
-    var phonenumber: String? = null,
+    var email: String? = null,
+    var phoneNumber: String? = null,
     var imageUrl: String? = null,
     var bio: String? = null,
     var role:List<Roles>? = null,
+    var pass: String? = null,
     //Add the services
     var services: List<String>? = null
 ) {
@@ -35,7 +37,7 @@ data class UserData(
         "name" to name,
         "firstname" to firstname,
         "lastname" to lastname,
-        "phonenumber" to phonenumber,
+        "phoneNumber" to phoneNumber,
         "username" to username,
         "imageUrl" to imageUrl,
         "bio" to bio,

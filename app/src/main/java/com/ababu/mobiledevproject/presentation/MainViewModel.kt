@@ -89,11 +89,11 @@ class MainViewModel @Inject constructor(
         firstname: String,
         lastname: String,
         email: String,
-        phonenumber: String,
+        phoneNumber: String,
         pass: String
     ) {
         //validate all fields are filled
-        if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || phonenumber.isEmpty() || email.isEmpty() || pass.isEmpty()) {
+        if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || pass.isEmpty()) {
             popupNotification.value = Event("Please fill in all the fields")
             return
         }
@@ -114,7 +114,17 @@ class MainViewModel @Inject constructor(
                     auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             signedIn.value = true
+
                             //createOrUpdateProfile(username = username)
+
+                            createOrUpdateProfile(
+                                username = username,
+                                firstname = firstname,
+                                lastname = lastname,
+                                email = email,
+                                phoneNumber = phoneNumber,
+                                pass = pass)
+
                         } else {
                             handleException(task.exception, "Signup failed")
                         }
@@ -167,7 +177,9 @@ class MainViewModel @Inject constructor(
         username: String? = null,
         firstname: String? = null,
         lastname: String? = null,
-        phonenumber: String? = null,
+        email: String? = null,
+        phoneNumber: String? = null,
+        pass: String? = null,
         bio: String? = null,
         imageUrl: String? = null
     ) {
@@ -178,7 +190,9 @@ class MainViewModel @Inject constructor(
             username = username ?: userData.value?.username,
             firstname = firstname?: userData.value?.firstname,
             lastname = lastname?: userData.value?.lastname,
-            phonenumber = phonenumber?: userData.value?.phonenumber,
+            email = email?: userData.value?.email,
+            phoneNumber = phoneNumber?: userData.value?.phoneNumber,
+            pass = pass?: userData.value?.pass,
             bio = bio ?: userData.value?.bio,
             imageUrl = imageUrl ?: userData.value?.imageUrl,
             role = userData.value?.role,
