@@ -5,17 +5,20 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.ababu.mobiledevproject.common.BOOKINGS
 import com.ababu.mobiledevproject.common.SERVICES
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
-import com.google.firebase.storage.FirebaseStorage
 import com.ababu.mobiledevproject.common.USERS
+import com.ababu.mobiledevproject.data.BookingData
 import com.ababu.mobiledevproject.data.Event
 import com.ababu.mobiledevproject.data.ServicesData
 import com.ababu.mobiledevproject.data.UserData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
 
@@ -46,6 +49,7 @@ class MainViewModel @Inject constructor(
     val userData = mutableStateOf<UserData?>(null)
     val servicesData = mutableStateOf<ServicesData?>(null)
     val popupNotification = mutableStateOf<Event<String>?>(null)
+
 
     /**
      * Initializes the MainViewModel.
@@ -376,6 +380,49 @@ class MainViewModel @Inject constructor(
         }
         val sortedServices = newServices.sortedByDescending { it.time }
         outState.value = sortedServices
+    }
+
+
+
+
+private fun onCreateBooking(username: String, email: String, description: String, date: Date, onBookingSuccess: () -> Unit) {
+    //fetch userid
+    val uid = auth.currentUser?.uid
+    //get the current username
+//    val username = userData.value?.username
+
+
+    //check if the current user id is null
+    if (uid !== null) {
+        //create a unique id for the booking
+        val bookingUuid = UUID.randomUUID().toString()
+        //Assign the bookings data model variables
+        val booking = BookingData(
+            bookingId = bookingUuid,
+            username = username,
+            email = email,
+            date = date,
+            serviceDescription = description
+        )
+        db.collection(
+            BOOKINGS
+        ).document(bookingUuid).set(booking).addOnSuccessListener {
+            popupNotification.value = Event("Booking successful, you will receive an email confirmation shortly")
+            inProgress.value = false
+            onBookingSuccess.invoke()
+        }.addOnFailureListener { exc ->
+            handleException(exc, "Error saving booking please try again later")
+            inProgress.value = false
+        }
+
+    } else {
+        handleException(customMessage = "Error: username unavailable. Unable to save booking")
+        onLogout()
+        inProgress.value = false
+    }
+}
+    fun onNewBooking(username: String, email: String, description: String, date: Date, onBookingSuccess: () -> Unit){
+        onCreateBooking(username, email, description, date, onBookingSuccess)
     }
 
 }
