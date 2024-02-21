@@ -3,7 +3,6 @@ package com.ababu.mobiledevproject.presentation
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.ababu.mobiledevproject.common.BOOKINGS
@@ -16,7 +15,6 @@ import com.ababu.mobiledevproject.data.ServicesData
 import com.ababu.mobiledevproject.data.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -427,23 +425,10 @@ class MainViewModel @Inject constructor(
     }
     private fun updateServiceImageData(imageUrl: String) {
 
-
-    }
-
-    private fun convertServices(documents: QuerySnapshot, outState: MutableState<List<ServicesData>>) {
-        val newServices = mutableListOf<ServicesData>()
-        documents.forEach { doc ->
-            val services = doc.toObject<ServicesData>()
-            newServices.add(services)
-        }
-        val sortedServices = newServices.sortedByDescending { it.time }
-        outState.value = sortedServices
     }
 
 
-
-
-private fun onCreateBooking(username: String, email: String, description: String, date: Date, onBookingSuccess: () -> Unit) {
+    private fun onCreateBooking(username: String, email: String, description: String, date: Date, onBookingSuccess: () -> Unit) {
     //fetch userid
     val uid = auth.currentUser?.uid
     //get the current username
