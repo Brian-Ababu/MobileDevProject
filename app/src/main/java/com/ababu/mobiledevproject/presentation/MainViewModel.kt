@@ -1,5 +1,6 @@
 package com.ababu.mobiledevproject.presentation
 
+import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -266,7 +267,7 @@ class MainViewModel @Inject constructor(
      * @param exception The exception to handle. Defaults to null.
      * @param customMessage A custom message to display along with the exception. Defaults to an empty string.
      */
-    fun handleException(exception: Exception? = null, customMessage: String = "") {
+    private fun handleException(exception: Exception? = null, customMessage: String = "") {
         exception?.printStackTrace()
         val errorMsg = exception?.localizedMessage ?: ""
         val message = if (customMessage.isEmpty()) errorMsg else "$customMessage: $errorMsg"
@@ -302,9 +303,11 @@ class MainViewModel @Inject constructor(
                     userDocRef.update(updatedFields)
                         .addOnSuccessListener {
                             // Profile update successful
+                            handleException(customMessage = "Profile Update Successful")
                         }
                         .addOnFailureListener { exception ->
                             // Handle profile update failure
+                            handleException(exception, "profile update failed")
                         }
                 } else {
                     // No fields have changed
@@ -444,8 +447,6 @@ private fun onCreateBooking(username: String, email: String, description: String
     //fetch userid
     val uid = auth.currentUser?.uid
     //get the current username
-//    val username = userData.value?.username
-
 
     //check if the current user id is null
     if (uid !== null) {
@@ -478,6 +479,18 @@ private fun onCreateBooking(username: String, email: String, description: String
 }
     fun onNewBooking(username: String, email: String, description: String, date: Date, onBookingSuccess: () -> Unit){
         onCreateBooking(username, email, description, date, onBookingSuccess)
+    }
+
+    //password reset logic
+    fun onPasswordReset(email: String){
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d( TAG,"onPasswordReset Success: Email sent.")
+                } else {
+                    Log.e(TAG, "onPasswordReset Failure: Failed to send Password Reset Email", task.exception)
+                }
+            }
     }
 
 }

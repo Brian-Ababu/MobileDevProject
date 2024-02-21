@@ -11,4 +11,6 @@ sealed class Routes(val route:String){
     object Booking : Routes("booking")
     object Style : Routes("style")
 
+    object PasswordReset : Routes("password-reset")
+
 }

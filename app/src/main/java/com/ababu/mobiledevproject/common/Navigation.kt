@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ababu.mobiledevproject.presentation.MainViewModel
 import com.ababu.mobiledevproject.presentation.common.NotificationMessage
 import com.ababu.mobiledevproject.presentation.screens.auth.LoginScreen
+import com.ababu.mobiledevproject.presentation.screens.auth.PasswordResetScreen
 import com.ababu.mobiledevproject.presentation.screens.auth.SignupScreen
 import com.ababu.mobiledevproject.presentation.screens.main.BookingScreen
 import com.ababu.mobiledevproject.presentation.screens.main.HomeScreen
@@ -49,6 +50,9 @@ fun MobileApp() {
         }
         composable(Routes.Style.route){
             ServicesUploadScreen(navController = navController, vm = vm, encodedUri = "imageUri" )
+        }
+        composable(Routes.PasswordReset.route){
+            PasswordResetScreen(navController = navController, vm = vm)
         }
 
     }
