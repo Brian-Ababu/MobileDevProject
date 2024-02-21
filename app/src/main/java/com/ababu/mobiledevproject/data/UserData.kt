@@ -4,17 +4,20 @@ package com.ababu.mobiledevproject.data
  * Represents user data.
  *
  * @property userId The unique identifier of the user.
- * @property name The name of the user.
  * @property username The username of the user.
+ * @property firstname The User's first name
+ * @property lastname The User's last name
+ * @property email The User's email
+ * @property phoneNumber The User's mobile number
+ * @property role Assigned user Role
  * @property imageUrl The URL of the user's profile image.
  * @property bio The bio of the user.
- * @property Services The list of servicces that the user is has.
+ * @property Services The list of services that the user has.
  */
 // firebase requires empty constructor thus initalize to null
 
 data class UserData(
     var userId: String? = null,
-    var name: String? = null,
     var username: String? = null,
     var firstname: String? = null,
     var lastname: String? = null,
@@ -34,7 +37,6 @@ data class UserData(
      */
     fun toMap() = mapOf(
         "userId" to userId,
-        "name" to name,
         "firstname" to firstname,
         "lastname" to lastname,
         "phoneNumber" to phoneNumber,

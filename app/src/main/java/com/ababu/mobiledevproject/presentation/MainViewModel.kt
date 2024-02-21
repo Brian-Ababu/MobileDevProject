@@ -10,6 +10,7 @@ import com.ababu.mobiledevproject.common.SERVICES
 import com.ababu.mobiledevproject.common.USERS
 import com.ababu.mobiledevproject.data.BookingData
 import com.ababu.mobiledevproject.data.Event
+import com.ababu.mobiledevproject.data.Roles
 import com.ababu.mobiledevproject.data.ServicesData
 import com.ababu.mobiledevproject.data.UserData
 import com.google.firebase.auth.FirebaseAuth
@@ -92,6 +93,10 @@ class MainViewModel @Inject constructor(
         phoneNumber: String,
         pass: String
     ) {
+
+        //setting a default role
+        val role = Roles.USER
+
         //validate all fields are filled
         if (username.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || pass.isEmpty()) {
             popupNotification.value = Event("Please fill in all the fields")
@@ -113,17 +118,17 @@ class MainViewModel @Inject constructor(
                      */
                     auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            signedIn.value = true
 
-                            //createOrUpdateProfile(username = username)
-
+                            //Successfully signed Up
                             createOrUpdateProfile(
                                 username = username,
                                 firstname = firstname,
                                 lastname = lastname,
                                 email = email,
-                                phoneNumber = phoneNumber,
-                                pass = pass)
+                                phoneNumber = phoneNumber
+                                )
+
+                            signedIn.value = true
 
                         } else {
                             handleException(task.exception, "Signup failed")
@@ -173,7 +178,6 @@ class MainViewModel @Inject constructor(
      */
 
     private fun createOrUpdateProfile(
-        name: String? = null,
         username: String? = null,
         firstname: String? = null,
         lastname: String? = null,
@@ -186,7 +190,6 @@ class MainViewModel @Inject constructor(
         val uid = auth.currentUser?.uid
         val userData = UserData(
             userId = uid,
-            name = name ?: userData.value?.name,
             username = username ?: userData.value?.username,
             firstname = firstname?: userData.value?.firstname,
             lastname = lastname?: userData.value?.lastname,
@@ -271,7 +274,45 @@ class MainViewModel @Inject constructor(
     }
 
     fun updateProfileData(firstname: String, lastname: String, username: String, bio: String) {
-        createOrUpdateProfile(firstname, lastname, username, bio)
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        // Get current user data from Firestore
+        val db = db
+        val userDocRef = currentUser?.uid?.let { db.collection("users").document(it) }
+
+        userDocRef?.get()?.addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val currentProfileData = documentSnapshot.toObject(UserData::class.java)
+
+                // Compare the current profile data with the new data
+                val updatedFirstname = if (currentProfileData?.firstname != firstname) firstname else null
+                val updatedLastname = if (currentProfileData?.lastname != lastname) lastname else null
+                val updatedUsername = if (currentProfileData?.username != username) username else null
+                val updatedBio = if (currentProfileData?.bio != bio) bio else null
+
+                // Update only the fields that have changed
+                val updatedFields = hashMapOf<String, Any?>()
+                if (updatedFirstname != null) updatedFields["firstname"] = updatedFirstname
+                if (updatedLastname != null) updatedFields["lastname"] = updatedLastname
+                if (updatedUsername != null) updatedFields["username"] = updatedUsername
+                if (updatedBio != null) updatedFields["bio"] = updatedBio
+
+                // Perform the update if any fields have changed
+                if (updatedFields.isNotEmpty()) {
+                    userDocRef.update(updatedFields)
+                        .addOnSuccessListener {
+                            // Profile update successful
+                        }
+                        .addOnFailureListener { exception ->
+                            // Handle profile update failure
+                        }
+                } else {
+                    // No fields have changed
+                }
+            } else {
+                // User document does not exist
+            }
+        }
     }
 
     fun onLogout() {
@@ -440,3 +481,4 @@ private fun onCreateBooking(username: String, email: String, description: String
     }
 
 }
+

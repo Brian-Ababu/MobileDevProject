@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ababu.mobiledevproject.R
 import com.ababu.mobiledevproject.common.Routes
+import com.ababu.mobiledevproject.data.Roles
 import com.ababu.mobiledevproject.presentation.MainViewModel
 import com.ababu.mobiledevproject.presentation.common.CheckSignedIn
 import com.ababu.mobiledevproject.presentation.common.ProgressSpinner
@@ -66,6 +67,7 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
             val emailState = remember { mutableStateOf(TextFieldValue()) }
             val phoneNumberState = remember { mutableStateOf(TextFieldValue()) }
             val passwordState = remember { mutableStateOf(TextFieldValue()) }
+            var role = Roles.USER
 
             myImage(image = R.drawable.headingimage)
             HeadingTextComponent(value = "Create an account")
@@ -112,7 +114,13 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
                 onClick = {
                     focus.clearFocus(force = true)
                     vm.onSignup(
-                       usernameState.value.text, firstNameState.value.text, lastNameState.value.text, emailState.value.text, phoneNumberState.value.text, passwordState.value.text
+                        usernameState.value.text,
+                        firstNameState.value.text,
+                        lastNameState.value.text,
+                        emailState.value.text,
+                        phoneNumberState.value.text,
+                        //pass.value.text,
+                        passwordState.value.text
                     )
                     Log.d("Email:", emailState.value.text,)
 //                    Log.d( "SignupScreen: check"  $emailState, $passwordState)
