@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.ababu.mobiledevproject.common.BOOKINGS
+import com.ababu.mobiledevproject.common.EmailSender
 import com.ababu.mobiledevproject.common.SERVICES
 import com.ababu.mobiledevproject.common.USERS
 import com.ababu.mobiledevproject.data.BookingData
@@ -451,6 +452,8 @@ class MainViewModel @Inject constructor(
             popupNotification.value = Event("Booking successful, you will receive an email confirmation shortly")
             inProgress.value = false
             onBookingSuccess.invoke()
+        }.addOnCompleteListener {
+            sendBookingConfirmationEmail(bookingId = bookingUuid)
         }.addOnFailureListener { exc ->
             handleException(exc, "Error saving booking please try again later")
             inProgress.value = false
@@ -464,6 +467,7 @@ class MainViewModel @Inject constructor(
 }
     fun onNewBooking(username: String, email: String, description: String, date: Date, onBookingSuccess: () -> Unit){
         onCreateBooking(username, email, description, date, onBookingSuccess)
+
     }
 
     //password reset logic
@@ -477,6 +481,32 @@ class MainViewModel @Inject constructor(
                 }
             }
     }
+    private fun sendBookingConfirmationEmail(bookingId: String){
+
+        // Query Firestore to retrieve booking data
+        db.collection(BOOKINGS).document(bookingId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    // Extract relevant data from Firestore document
+                    val username = document.getString("username")
+                    val email = document.getString("email")
+                    val serviceDescription = document.getString("serviceDescription")
+                    // Compose email content
+                    val subject = "Booking Confirmation"
+                    val content = "Dear $username,\n\nThank you for your booking.\n\nService: $serviceDescription\n\nRegards,\nYour MDev Services"
+                    // Send email
+                    val emailSender = EmailSender()
+                    emailSender.sendEmail(subject, email.toString(), content)
+                } else {
+                    println("No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: $exception")
+            }
+
+    }
+
 
 }
 
